@@ -132,6 +132,9 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.binary_location = "/usr/bin/google-chrome"
 
+    # Указание уникальной директории данных
+    chrome_options.add_argument(f"--user-data-dir=/tmp/chrome-data/{time.time()}")
+
     # Используем Service для ChromeDriver
     service = Service(binary_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
