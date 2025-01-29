@@ -13,6 +13,24 @@ FOTOR_EMAIL = "zmeirlen@gmail.com"
 FOTOR_PASSWORD = "Alihan91alijan!"
 COOKIES_FILE_PATH = "fotor_cookies.pkl"
 
+
+# Функция для извлечения всех доступных блоков
+def extract_all_blocks(driver):
+    # Получаем все элементы div на странице
+    all_blocks = driver.find_elements(By.TAG_NAME, "div")
+
+    print(f"🔍 Найдено {len(all_blocks)} блоков <div> на странице.")
+
+    # Выводим основные атрибуты каждого блока (например, класс и текст)
+    for index, block in enumerate(all_blocks):
+        try:
+            class_name = block.get_attribute("class")
+            block_text = block.text.strip()[:100]  # Ограничиваем текст первыми 100 символами
+            print(f"Блок {index + 1}: class='{class_name}', текст='{block_text}'")
+        except Exception as e:
+            print(f"⚠ Ошибка при обработке блока {index + 1}: {e}")
+
+
 def save_cookies(driver, path):
     """Сохраняет cookies в файл."""
     with open(path, 'wb') as file:
@@ -126,9 +144,12 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     chrome_options.add_experimental_option("prefs", prefs)
 
     # Настройка для headless-режима
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--disable-gpu")
+
     chrome_options.binary_location = "/usr/bin/google-chrome"
 
     # Используем Service для ChromeDriver
@@ -149,8 +170,7 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         upload_input.send_keys(image1_path)
         print("✅ Первое фото загружено.")
         time.sleep(10)
-
-
+        extract_all_blocks(driver)
 
         upload_button = driver.find_element(By.CLASS_NAME, "swap_target_upload_button__LlgSz")
         upload_button.click()
