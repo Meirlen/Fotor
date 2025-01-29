@@ -5,7 +5,9 @@ services:
     build: .
     container_name: face_swap_container
     environment:
-      - PYTHONUNBUFFERED=1  # Чтобы логи выводились в реальном времени
+      - PYTHONUNBUFFERED=1
     volumes:
-      - .:/app  # Монтируем текущую директорию в контейнер
+      - .:/app
     restart: unless-stopped
+    ports:
+      - "9222:9222"
