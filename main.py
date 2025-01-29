@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.service import Service
 import os
 import time
 import pickle
-from chromedriver_py import binary_path  # Получаем путь к установленному ChromeDriver
+from chromedriver_py import binary_path
 
 # 🔹 Данные для входа
 FOTOR_EMAIL = "zmeirlen@gmail.com"
@@ -162,17 +162,27 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         upload_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
         upload_input.send_keys(image2_path)
         print("✅ Второе фото загружено.")
-        time.sleep(20)
+        time.sleep(5)
+
+        # 🔹 Ожидание появления второго фото на странице
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, ".fotor-dropzone.image-drop-zone.float-left.layout-swapper-upload.active"))
+        )
+        print("✅ Второе фото появилось на странице.")
+
+        # 🔹 Ожидание, пока кнопка "Swap Face Now" станет кликабельной
+        swap_button = WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, ".generate-button_generate_button__LStMd"))
+        )
+
+        # 🔹 Дополнительное ожидание на случай, если кнопка не сразу готова
+        time.sleep(5)
 
         # 🔹 Сохранение скриншота страницы для отладки
         driver.save_screenshot("/app/test_photos/fotor_swapper_debug.png")
         print("📸 Скриншот страницы сохранен в /app/test_photos/fotor_swapper_debug.png")
 
 
-        # 🔹 Нажатие кнопки "Swap Face Now"
-        swap_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, ".generate-button_generate_button__LStMd"))
-        )
         swap_button.click()
         print("✅ Начался процесс замены лиц.")
 
