@@ -154,7 +154,7 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
 
 
 
-        upload_button = driver.find_element(By.CLASS_NAME, "swap_target_upload_button__LlgSz")
+        upload_button = driver.find_element(By.CLASS_NAME, "swap_target_wrap__1rXpf")
         upload_button.click()
         print("✅ Кнопка загрузки нажата.")
         time.sleep(2)
