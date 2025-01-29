@@ -144,7 +144,7 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     chrome_options.add_experimental_option("prefs", prefs)
 
     # Настройка для headless-режима
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--window-size=1920,1080")
