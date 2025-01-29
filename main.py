@@ -225,5 +225,5 @@ download_directory = "/app/test_photos"
 
 
 
-downloaded_file = swap_faces_and_download(image1, image2, download_directory)
+downloaded_file = swap_faces_and_download(image2, image1, download_directory)
 print(f"📥 Загруженный файл: {downloaded_file}")
