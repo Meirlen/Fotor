@@ -2,10 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
 import os
 import time
 import pickle
-from chromedriver_py import binary_path  # Получаем путь к ChromeDriver
+from chromedriver_py import binary_path  # Получаем путь к установленному ChromeDriver
 
 # 🔹 Данные для входа
 FOTOR_EMAIL = "zmeirlen@gmail.com"
@@ -130,8 +131,9 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.binary_location = "/usr/bin/google-chrome"
 
-    # Используем установленный ChromeDriver
-    driver = webdriver.Chrome(executable_path=binary_path, options=chrome_options)
+    # Используем Service для ChromeDriver
+    service = Service(binary_path)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     try:
         # 🔹 Вход в Fotor
