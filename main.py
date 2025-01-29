@@ -126,7 +126,6 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     chrome_options.add_experimental_option("prefs", prefs)
 
     # Настройка для headless-режима
-    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--window-size=1920,1080")
@@ -152,17 +151,12 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         print("✅ Первое фото загружено.")
         time.sleep(10)
 
-        # 🔹 Нажимаем "Continue"
-        # plus_button = WebDriverWait(driver, 15).until(
-        #     EC.element_to_be_clickable((By.CLASS_NAME, "button_reset_css.email_way_bottom_row_next"))
-        # )
-        # plus_button.click()
-        # Поиск элемента SVG с использованием пространства имен xmlns и его дочернего элемента
-        svg_element = driver.find_element(By.XPATH, "//*[name()='svg' and @xmlns='http://www.w3.org/2000/svg']")
 
-        # Клик по найденному SVG
-        svg_element.click()
 
+        upload_button = driver.find_element(By.CLASS_NAME, "swap_target_upload_button__LlgSz")
+        upload_button.click()
+        print("✅ Кнопка загрузки нажата.")
+        time.sleep(2)
         print("✅ Кнопка '+' нажата.")
 
         time.sleep(2)
@@ -170,14 +164,10 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         # 🔹 Сохранение скриншота страницы для отладки
         driver.save_screenshot("/app/test_photos/fotor_swapper_debug.png")
         print("📸 Скриншот страницы сохранен в /app/test_photos/fotor_swapper_debug.png")
-        time.sleep(5)
 
-        # Подождать появления нового элемента
-        upload_input = WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']"))
-        )
+        # 🔹 Загрузка второго фото
+        upload_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
         upload_input.send_keys(image2_path)
-
         print("✅ Второе фото загружено.")
         time.sleep(10)
 
