@@ -166,7 +166,7 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         upload_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
         upload_input.send_keys(image2_path)
         print("✅ Второе фото загружено.")
-        time.sleep(10)
+        time.sleep(20)
 
         # 🔹 Нажатие кнопки "Swap Face Now"
         swap_button = WebDriverWait(driver, 10).until(
