@@ -5,8 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import time
 import pickle
-from selenium.webdriver.chrome.service import Service
-
+from chromedriver_py import binary_path  # Получаем путь к ChromeDriver
 
 # 🔹 Данные для входа
 FOTOR_EMAIL = "zmeirlen@gmail.com"
@@ -125,17 +124,14 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     }
     chrome_options.add_experimental_option("prefs", prefs)
 
-    # Укажи путь к бинарному файлу Google Chrome
-    chrome_options.binary_location = "/usr/bin/google-chrome"
-
     # Настройка для headless-режима
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.binary_location = "/usr/bin/google-chrome"
 
-    # Укажи путь к ChromeDriver
-    service = Service("/usr/local/bin/chromedriver")
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    # Используем установленный ChromeDriver
+    driver = webdriver.Chrome(executable_path=binary_path, options=chrome_options)
 
     try:
         # 🔹 Вход в Fotor
