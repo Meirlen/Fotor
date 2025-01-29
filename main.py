@@ -159,7 +159,7 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         time.sleep(2)
 
         # 🔹 Сохранение скриншота страницы для отладки
-        driver.save_screenshot("app/tmp/fotor_swapper_debug.png")
+        driver.save_screenshot("/app/screen/fotor_swapper_debug.png")
         print("📸 Скриншот страницы сохранен в /tmp/fotor_swapper_debug.png")
 
         # 🔹 Загрузка второго фото
