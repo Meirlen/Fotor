@@ -9,7 +9,7 @@ import pickle
 # 🔹 Данные для входа
 FOTOR_EMAIL = "zmeirlen@gmail.com"
 FOTOR_PASSWORD = "Alihan91alijan!"
-COOKIES_FILE_PATH = "../fotor/fotor_cookies.pkl"
+COOKIES_FILE_PATH = "/root/Fotor/fotor_cookies.pkl"
 
 def save_cookies(driver, path):
     """Сохраняет cookies в файл."""
@@ -131,8 +131,8 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    # Запуск браузера
-    driver = webdriver.Chrome(options=chrome_options)
+    # Укажи путь к ChromeDriver
+    driver = webdriver.Chrome(executable_path="/usr/local/bin/chromedriver", options=chrome_options)
 
     try:
         # 🔹 Вход в Fotor
@@ -155,7 +155,6 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         )
         plus_button.click()
         print("✅ Кнопка '+' нажата.")
-
         time.sleep(2)
 
         # 🔹 Загрузка второго фото
