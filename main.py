@@ -214,9 +214,9 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         driver.quit()
 
 # 🔹 Пример использования
-image1 = "/path/to/image1.jpg"
-image2 = "/path/to/image2.jpg"
-download_directory = "/path/to/download"
+image1 = "test_photos/book_image.png"
+image2 = "test_photos/alihan.png"
+download_directory = "test_photos"
 
 downloaded_file = swap_faces_and_download(image1, image2, download_directory)
 print(f"📥 Загруженный файл: {downloaded_file}")
