@@ -156,17 +156,18 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         )
         plus_button.click()
         print("✅ Кнопка '+' нажата.")
-        time.sleep(2)
-
-        # 🔹 Сохранение скриншота страницы для отладки
-        driver.save_screenshot("/app/test_photos/fotor_swapper_debug.png")
-        print("📸 Скриншот страницы сохранен в /app/test_photos/fotor_swapper_debug.png")
+        time.sleep(5)
 
         # 🔹 Загрузка второго фото
         upload_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
         upload_input.send_keys(image2_path)
         print("✅ Второе фото загружено.")
         time.sleep(20)
+
+        # 🔹 Сохранение скриншота страницы для отладки
+        driver.save_screenshot("/app/test_photos/fotor_swapper_debug.png")
+        print("📸 Скриншот страницы сохранен в /app/test_photos/fotor_swapper_debug.png")
+
 
         # 🔹 Нажатие кнопки "Swap Face Now"
         swap_button = WebDriverWait(driver, 10).until(
