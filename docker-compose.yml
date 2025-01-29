@@ -9,5 +9,5 @@ services:
     volumes:
       - .:/app
     restart: unless-stopped
-    ports:
-      - "9222:9222"
+#    ports:
+#      - "9222:9222"
