@@ -170,10 +170,14 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         # 🔹 Сохранение скриншота страницы для отладки
         driver.save_screenshot("/app/test_photos/fotor_swapper_debug.png")
         print("📸 Скриншот страницы сохранен в /app/test_photos/fotor_swapper_debug.png")
+        time.sleep(5)
 
-        # 🔹 Загрузка второго фото
-        upload_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
+        # Подождать появления нового элемента
+        upload_input = WebDriverWait(driver, 15).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']"))
+        )
         upload_input.send_keys(image2_path)
+
         print("✅ Второе фото загружено.")
         time.sleep(10)
 
