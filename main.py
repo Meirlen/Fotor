@@ -104,11 +104,6 @@ def login_to_fotor(driver):
 
         time.sleep(10)  # Ждем вход
 
-        # # Проверяем, нет ли CAPTCHA
-        # if "captcha" in driver.page_source.lower():
-        #     print("⚠ Обнаружена CAPTCHA! Введите вручную и нажмите Enter.")
-        #     time.sleep(30)  # Даем время для ручного ввода
-
         # 🔹 Сохраняем cookies после успешного входа
         save_cookies(driver, COOKIES_FILE_PATH)
 
@@ -127,6 +122,14 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         "safebrowsing.enabled": True
     }
     chrome_options.add_experimental_option("prefs", prefs)
+
+    # Укажи путь к бинарному файлу Google Chrome
+    chrome_options.binary_location = "/usr/bin/google-chrome"
+
+    # Настройка для headless-режима
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
 
     # Запуск браузера
     driver = webdriver.Chrome(options=chrome_options)
@@ -209,16 +212,6 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
 
     finally:
         driver.quit()
-
-# 🔹 Пример использования
-# image1 = "/path/to/image1.jpg"
-# image2 = "/path/to/image2.jpg"
-# download_directory = "/path/to/download"
-
-# downloaded_file = swap_faces_and_download(image1, image2, download_directory)
-# print(f"📥 Загруженный файл: {downloaded_file}")
-
-
 
 # 🔹 Пример использования
 image1 = "/path/to/image1.jpg"
