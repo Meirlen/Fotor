@@ -160,16 +160,16 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
 
         # 🔹 Сохранение скриншота страницы для отладки
         driver.save_screenshot("/app/test_photos/fotor_swapper_debug.png")
-        print("📸 Скриншот страницы сохранен в /tmp/fotor_swapper_debug.png")
+        print("📸 Скриншот страницы сохранен в /app/test_photos/fotor_swapper_debug.png")
 
         # 🔹 Загрузка второго фото
         upload_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
         upload_input.send_keys(image2_path)
         print("✅ Второе фото загружено.")
-        time.sleep(20)
+        time.sleep(10)
 
         # 🔹 Нажатие кнопки "Swap Face Now"
-        swap_button = WebDriverWait(driver, 20).until(
+        swap_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, ".generate-button_generate_button__LStMd"))
         )
         swap_button.click()
@@ -178,7 +178,7 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         # 🔹 Ожидание появления окна с кнопкой подтверждения
         message_found = False
         start_time = time.time()
-        timeout = 500
+        timeout = 300
 
         while time.time() - start_time < timeout:
             try:
