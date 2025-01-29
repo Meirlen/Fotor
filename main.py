@@ -11,7 +11,7 @@ from chromedriver_py import binary_path  # Получаем путь к уста
 # 🔹 Данные для входа
 FOTOR_EMAIL = "zmeirlen@gmail.com"
 FOTOR_PASSWORD = "Alihan91alijan!"
-COOKIES_FILE_PATH = "/root/Fotor/fotor_cookies.pkl"
+COOKIES_FILE_PATH = "fotor_cookies.pkl"
 
 def save_cookies(driver, path):
     """Сохраняет cookies в файл."""
