@@ -3,14 +3,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.action_chains import ActionChains
 import os
 import time
 import pickle
 from chromedriver_py import binary_path
 
-# 🔹 Данные для входа
-FOTOR_EMAIL = "zmeirlen@gmail.com"  # Замените на свой email
-FOTOR_PASSWORD = "Alihan91alijan!"  # Замените на свой пароль
+# 🔹 Данные для входа (замените на свои)
+FOTOR_EMAIL = "zmeirlen@gmail.com"
+FOTOR_PASSWORD = "Alihan91alijan!"
 COOKIES_FILE_PATH = "fotor_cookies.pkl"
 
 def save_cookies(driver, path):
@@ -125,8 +126,8 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     }
     chrome_options.add_experimental_option("prefs", prefs)
 
-    # Настройка для headless-режима
-    chrome_options.add_argument("--headless")
+    # Настройка для headless-режима (раскомментируйте, если нужен headless)
+    # chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.binary_location = "/usr/bin/google-chrome"
@@ -151,10 +152,11 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         time.sleep(10)
 
         # 🔹 Нажатие кнопки "+"
-        plus_button = WebDriverWait(driver, 10).until(
+        plus_button = WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, ".swap_target_upload_button__LlgSz"))
         )
-        plus_button.click()
+        # Используем ActionChains для более надёжного клика
+        ActionChains(driver).move_to_element(plus_button).click().perform()
         print("✅ Кнопка '+' нажата.")
         time.sleep(5)
 
@@ -164,17 +166,24 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         print("✅ Второе фото загружено.")
         time.sleep(5)
 
-        # 🔹 Сохранение скриншота для отладки (после загрузки второго фото)
+        # 🔹 Сохранение скриншота сразу после загрузки второго фото
         driver.save_screenshot("/app/test_photos/fotor_swapper_debug_after_upload.png")
         print("📸 Скриншот после загрузки второго фото сохранен в /app/test_photos/fotor_swapper_debug_after_upload.png")
 
         # 🔹 Ожидание появления второго фото на странице
-        # !! ВАЖНО: Замените селектор на тот, который соответствует РЕАЛЬНОМУ элементу на странице
-        # Используйте инструменты разработчика, чтобы найти правильный селектор после загрузки второго фото
-        WebDriverWait(driver, 60).until(  # Увеличил ожидание до 60 секунд
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".fotor-dropzone.image-drop-zone.float-left.layout-swapper-upload.active img")) # ПРИМЕР селектора!
-        )
-        print("✅ Второе фото появилось на странице.")
+        try:
+            # !! ВАЖНО: Замените селектор на тот, который соответствует РЕАЛЬНОМУ элементу на странице
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, ".layout-swapper-preview-image.second"))
+            )
+            print("✅ Второе фото появилось на странице.")
+        except:
+            print("❌ Второе фото не появилось на странице.")
+            # Сохраняем HTML-код страницы для анализа
+            with open("/app/test_photos/page_source.html", "w") as f:
+                f.write(driver.page_source)
+            print("❌ HTML-код страницы сохранен в /app/test_photos/page_source.html")
+            return None
 
         # 🔹 Ожидание, пока кнопка "Swap Face Now" станет кликабельной
         swap_button = WebDriverWait(driver, 20).until(
@@ -184,10 +193,11 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         # 🔹 Дополнительное ожидание
         time.sleep(5)
 
-        # 🔹 Сохранение скриншота для отладки (перед нажатием кнопки)
+        # 🔹 Сохранение скриншота перед нажатием кнопки "Swap Face Now"
         driver.save_screenshot("/app/test_photos/fotor_swapper_debug_before_swap.png")
         print("📸 Скриншот перед нажатием Swap Face Now сохранен в /app/test_photos/fotor_swapper_debug_before_swap.png")
 
+        # 🔹 Нажатие кнопки "Swap Face Now"
         swap_button.click()
         print("✅ Начался процесс замены лиц.")
 
@@ -219,7 +229,7 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
             print("❌ Сообщение не появилось.")
             return None
 
-        # 🔹 Ожидание загрузки файла (увеличено)
+        # 🔹 Ожидание загрузки файла
         time.sleep(20)
 
         # 🔹 Поиск последнего загруженного файла
@@ -233,9 +243,9 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
     finally:
         driver.quit()
 
-# 🔹 Пример использования (укажите свои пути к изображениям)
-image1 = "/app/test_photos/book_image.jpg"
-image2 = "/app/test_photos/alihan.png"
+# 🔹 Пример использования
+image1 = "/app/test_photos/book_image.jpg"  # Замените на путь к вашему первому изображению
+image2 = "/app/test_photos/alihan.png"  # Замените на путь к вашему второму изображению
 download_directory = "/app/test_photos"
 
 downloaded_file = swap_faces_and_download(image2, image1, download_directory)
