@@ -169,11 +169,14 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         upload_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
         upload_input.send_keys(image1_path)
         print("✅ Первое фото загружено.")
-        time.sleep(10)
+        time.sleep(15)
         # extract_all_blocks(driver)
-
-        upload_button = driver.find_element(By.CLASS_NAME, "swap_target_upload_button__LlgSz")
+        upload_button = WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'swap_target_upload_button__')]"))
+        )
         upload_button.click()
+        print("✅ Кнопка '+' нажата.")
+
         print("✅ Кнопка '+' нажата.")
 
         time.sleep(10)
@@ -189,7 +192,7 @@ def swap_faces_and_download(image1_path, image2_path, download_dir):
         driver.save_screenshot("/app/test_photos/fotor_swapper_debug.png")
         print("📸 Скриншот страницы сохранен в /app/test_photos/fotor_swapper_debug.png")
 
-        time.sleep(2000)
+        time.sleep(10)
 
         # 🔹 Нажатие кнопки "Swap Face Now"
         swap_button = WebDriverWait(driver, 10).until(
